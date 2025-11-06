@@ -27,7 +27,7 @@ float upZ = 0.0f;
 
 float moveSpeed = 0.5f;
 
-float ninjaSpeed = 0.2f;
+float ninjaSpeed = 0.12f;
 
 int lastMouseX = 0;
 int lastMouseY = 0;
@@ -35,6 +35,12 @@ bool mouseLeftPressed = false;
 bool mouseRightPressed = false;
 bool mouseMiddlePressed = false;
 float mouseSensitivity = 0.01f;
+
+float ninjaRadius = 0.3f;
+float ninjaVelocityX = 0.0f;
+float ninjaVelocityZ = 0.0f;
+
+float bounceFactor = 0.5f;
 
 enum CameraView {
 	FREE_VIEW,
@@ -49,6 +55,60 @@ const float DEFAULT_CAM_X = 0.0f;
 const float DEFAULT_CAM_Y = 2.0f;
 const float DEFAULT_CAM_Z = 5.0f;
 
+bool checkWallCollisionAndBounce(float& testX, float& testZ, float moveX, float moveZ) {
+	for (int i = 0; i < 3; i++) {
+		float wallMinX = walls[i].getX() - walls[i].getWidth() * 0.5f;
+		float wallMaxX = walls[i].getX() + walls[i].getWidth() * 0.5f;
+		float wallMinY = walls[i].getY() - walls[i].getHeight() * 0.5f;
+		float wallMaxY = walls[i].getY() + walls[i].getHeight() * 0.5f;
+		float wallMinZ = walls[i].getZ() - walls[i].getDepth() * 0.5f;
+		float wallMaxZ = walls[i].getZ() + walls[i].getDepth() * 0.5f;
+
+		float closestX = (testX < wallMinX) ? wallMinX : (testX > wallMaxX) ? wallMaxX : testX;
+		float closestY = (ninja.y < wallMinY) ? wallMinY : (ninja.y > wallMaxY) ? wallMaxY : ninja.y;
+		float closestZ = (testZ < wallMinZ) ? wallMinZ : (testZ > wallMaxZ) ? wallMaxZ : testZ;
+
+		float distX = testX - closestX;
+		float distY = ninja.y - closestY;
+		float distZ = testZ - closestZ;
+		float distance = sqrt(distX * distX + distY * distY + distZ * distZ);
+
+		if (distance < ninjaRadius) {
+
+			float normalX = distX / distance;
+			float normalZ = distZ / distance;
+
+			float penetration = ninjaRadius - distance;
+
+			testX += normalX * penetration;
+			testZ += normalZ * penetration;
+
+			testX -= moveX * bounceFactor;
+			testZ -= moveZ * bounceFactor;
+
+			return true;  
+		}
+	}
+	return false;  
+}
+
+
+void moveNinja(float moveX, float moveZ) {
+	float oldX = ninja.x;
+	float oldZ = ninja.z;
+
+	float newX = ninja.x + moveX;
+	float newZ = ninja.z + moveZ;
+
+	checkWallCollisionAndBounce(newX, newZ, moveX, moveZ);
+
+	ninja.x = newX;
+	ninja.z = newZ;
+
+	if (moveX != 0.0f || moveZ != 0.0f) {
+		ninja.yaw = atan2(moveX, moveZ) * 180.0f / 3.14159265f;
+	}
+}
 
 void drawGround() {
 	glPushMatrix();
@@ -260,10 +320,7 @@ void Keyboard(unsigned char key, int x, int y) {
 	}
 
 	if (moveX != 0.0f || moveZ != 0.0f) {
-		ninja.x += moveX;
-		ninja.z += moveZ;
-
-		ninja.yaw = atan2(moveX, moveZ) * 180.0f / 3.14159265f;
+		moveNinja(moveX, moveZ);
 	}
 
 	glutPostRedisplay();
@@ -289,10 +346,7 @@ void SpecialKeys(int key, int x, int y) {
 	}
 
 	if (moveX != 0.0f || moveZ != 0.0f) {
-		ninja.x += moveX;
-		ninja.z += moveZ;
-
-		ninja.yaw = atan2(moveX, moveZ) * 180.0f / 3.14159265f;
+		moveNinja(moveX, moveZ);
 	}
 
 	glutPostRedisplay();

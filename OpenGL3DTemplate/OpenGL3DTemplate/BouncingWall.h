@@ -17,8 +17,6 @@ public:
 
 	void draw();
 
-	bool checkCollisionAndBounce(float& playerX, float& playerY, float& playerZ, float& velocityX, float& velocityY, float& velocityZ, float playerRadius);
-
 	float getX() const { return posX; }
 	float getY() const { return posY; }
 	float getZ() const { return posZ; }

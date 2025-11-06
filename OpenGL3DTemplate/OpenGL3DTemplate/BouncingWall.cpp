@@ -185,54 +185,6 @@ void BouncingWall::draw()
     glPopMatrix(); 
 }
 
-
-
-
-bool BouncingWall::checkCollisionAndBounce(float& playerX, float& playerY, float& playerZ,
-	float& velocityX, float& velocityY, float& velocityZ,
-	float playerRadius) {
-
-	float minX = posX - width * 0.5f;
-	float maxX = posX + width * 0.5f;
-	float minY = posY - height * 0.5f;
-	float maxY = posY + height * 0.5f;
-	float minZ = posZ - depth * 0.5f;
-	float maxZ = posZ + depth * 0.5f;
-
-	float closestX = (playerX < minX) ? minX : (playerX > maxX) ? maxX : playerX;
-	float closestY = (playerY < minY) ? minY : (playerY > maxY) ? maxY : playerY;
-	float closestZ = (playerZ < minZ) ? minZ : (playerZ > maxZ) ? maxZ : playerZ;
-
-	float distX = playerX - closestX;
-	float distY = playerY - closestY;
-	float distZ = playerZ - closestZ;
-	float distance = sqrt(distX * distX + distY * distY + distZ * distZ);
-
-	if (distance < playerRadius) {
-		float penetration = playerRadius - distance;
-
-		float normalX = distX / distance;
-		float normalY = distY / distance;
-		float normalZ = distZ / distance;
-
-		playerX += normalX * penetration;
-		playerY += normalY * penetration;
-		playerZ += normalZ * penetration;
-
-		float velocityAlongNormal = velocityX * normalX + velocityY * normalY + velocityZ * normalZ;
-
-		if (velocityAlongNormal < 0) {
-			velocityX -= (1.0f + bounceFactor) * velocityAlongNormal * normalX;
-			velocityY -= (1.0f + bounceFactor) * velocityAlongNormal * normalY;
-			velocityZ -= (1.0f + bounceFactor) * velocityAlongNormal * normalZ;
-		}
-
-		return true;
-	}
-
-	return false;
-}
-
 void BouncingWall::setPosition(float x, float y, float z) {
 	posX = x;
 	posY = y;

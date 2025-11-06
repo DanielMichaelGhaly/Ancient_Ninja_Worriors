@@ -27,6 +27,8 @@ float upZ = 0.0f;
 
 float moveSpeed = 0.5f;
 
+float ninjaSpeed = 0.2f;
+
 int lastMouseX = 0;
 int lastMouseY = 0;
 bool mouseLeftPressed = false;
@@ -146,7 +148,6 @@ void updateCamera() {
 		upX, upY, upZ);
 }
 
-
 void Display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -159,11 +160,8 @@ void Display(void) {
 		wall.draw();
 	}
 
-	ninja.x = 0.0f;
 	ninja.y = -0.5f;  
-	ninja.z = 0.0f;
 	ninja.scale = 0.4f;  
-	//ninja.t = rotAng;    
 	ninja.draw();
 
 	//glPushMatrix();
@@ -183,7 +181,22 @@ void Display(void) {
 }
 
 void Keyboard(unsigned char key, int x, int y) {
+	float moveX = 0.0f;
+	float moveZ = 0.0f;
+
 	switch (key) {
+	case 'w': case 'W':
+		moveZ = -ninjaSpeed; 
+		break;
+	case 's': case 'S':
+		moveZ = ninjaSpeed;   
+		break;
+	case 'a': case 'A':
+		moveX = -ninjaSpeed;  
+		break;
+	case 'd': case 'D':
+		moveX = ninjaSpeed;   
+		break;
 	case 'y': case 'Y':  
 		if (currentView == FREE_VIEW) {
 			cameraZ -= moveSpeed;
@@ -244,6 +257,42 @@ void Keyboard(unsigned char key, int x, int y) {
 		upY = 1.0f;
 		upZ = 0.0f;
 		break;
+	}
+
+	if (moveX != 0.0f || moveZ != 0.0f) {
+		ninja.x += moveX;
+		ninja.z += moveZ;
+
+		ninja.yaw = atan2(moveX, moveZ) * 180.0f / 3.14159265f;
+	}
+
+	glutPostRedisplay();
+}
+
+void SpecialKeys(int key, int x, int y) {
+	float moveX = 0.0f;
+	float moveZ = 0.0f;
+
+	switch (key) {
+	case GLUT_KEY_UP:
+		moveZ = -ninjaSpeed;
+		break;
+	case GLUT_KEY_DOWN:
+		moveZ = ninjaSpeed;
+		break;
+	case GLUT_KEY_LEFT:
+		moveX = -ninjaSpeed;
+		break;
+	case GLUT_KEY_RIGHT:
+		moveX = ninjaSpeed;
+		break;
+	}
+
+	if (moveX != 0.0f || moveZ != 0.0f) {
+		ninja.x += moveX;
+		ninja.z += moveZ;
+
+		ninja.yaw = atan2(moveX, moveZ) * 180.0f / 3.14159265f;
 	}
 
 	glutPostRedisplay();
@@ -324,7 +373,6 @@ void PassiveMouseMotion(int x, int y) {
 	lastMouseY = y;
 }
 
-
 void Anim() {
 	rotAng += 0.01;
 
@@ -341,6 +389,7 @@ void main(int argc, char** argv) {
 	glutDisplayFunc(Display);
 	glutIdleFunc(Anim);
 	glutKeyboardFunc(Keyboard);
+	glutSpecialFunc(SpecialKeys);
 	glutMouseFunc(Mouse);
 	glutMotionFunc(MouseMotion);
 	glutPassiveMotionFunc(PassiveMouseMotion);

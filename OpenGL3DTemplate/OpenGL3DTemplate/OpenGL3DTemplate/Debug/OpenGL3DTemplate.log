@@ -1,0 +1,3 @@
+﻿  OpenGL3DTemplate.cpp
+BouncingWall.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+  OpenGL3DTemplate.vcxproj -> D:\DanielDesktop\GUC\4th_year_1st_semester\Computer_Graphics\Ancient_Ninja_Warrior\OpenGL3DTemplate\OpenGL3DTemplate\Debug\OpenGL3DTemplate.exe

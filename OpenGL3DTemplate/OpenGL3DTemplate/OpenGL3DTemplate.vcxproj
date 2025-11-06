@@ -82,7 +82,11 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BouncingWall.cpp" />
     <ClCompile Include="OpenGL3DTemplate.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BouncingWall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

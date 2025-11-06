@@ -1,12 +1,15 @@
 #include <stdlib.h>
 #include <glut.h>
 #include <BouncingWall.h>
+#include <NinjaPlayer.cpp>
 
-BouncingWall wall1(0.0f, 0.0f, -3.0f, 2.0f, 2.5f, 0.3f);
-BouncingWall wall2(3.0f, 0.0f, -3.0f, 2.0f, 2.5f, 0.3f);
-BouncingWall wall3(-3.0f, 0.0f, -3.0f, 2.0f, 2.5f, 0.3f);
+BouncingWall wall1(0.0f, 0.5f, -3.0f, 2.0f, 2.5f, 0.3f);
+BouncingWall wall2(3.0f, 0.5f, -3.0f, 2.0f, 2.5f, 0.3f);
+BouncingWall wall3(-3.0f, 0.5f, -3.0f, 2.0f, 2.5f, 0.3f);
 
 BouncingWall walls[] = {wall1, wall2, wall3};
+
+NinjaPlayer ninja;
 
 float rotAng;
 
@@ -155,6 +158,14 @@ void Display(void) {
 	{
 		wall.draw();
 	}
+
+	ninja.x = 0.0f;
+	ninja.y = -0.5f;  
+	ninja.z = 0.0f;
+	ninja.scale = 0.4f;  
+	//ninja.t = rotAng;    
+	ninja.draw();
+
 	//glPushMatrix();
 	//glRotatef(rotAng, 0, 1, 0);
 	//wall.draw();

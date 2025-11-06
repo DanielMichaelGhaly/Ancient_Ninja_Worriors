@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BouncingWall.cpp" />
+    <ClCompile Include="NinjaPlayer.cpp" />
     <ClCompile Include="OpenGL3DTemplate.cpp" />
   </ItemGroup>
   <ItemGroup>

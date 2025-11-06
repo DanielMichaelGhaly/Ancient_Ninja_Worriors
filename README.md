@@ -1,4 +1,5 @@
-3D Collectibles Game – Ancient East Asian Warriors
+#3D Collectibles Game – Ancient East Asian Warriors
+
 📜 Overview
 
 This project is a 3D collectibles game developed using OpenGL.

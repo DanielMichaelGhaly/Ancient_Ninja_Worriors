@@ -269,25 +269,214 @@ void drawPlatformBase(const Platform& p) {
     glPopMatrix();
 }
 
+// Helper (place near other statics if you want reuse)
+static void drawLantern(float r, float g, float b) {
+    glPushMatrix();
+    glColor3f(r * 0.85f, g * 0.85f, b * 0.85f);
+    glRotatef(-90, 1, 0, 0);
+    drawSolidCylinder(0.045f, 0.11f);
+    glColor3f(r, g, b);
+    glutSolidSphere(0.05f, 16, 16);
+    glTranslatef(0, 0, 0.11f);
+    glColor3f(r * 0.65f, g * 0.65f, b * 0.65f);
+    glutSolidSphere(0.038f, 12, 12);
+    glPopMatrix();
+}
+
+// Replace drawSushi
 void drawSushi(const Platform& p) {
     float top = platformTopY(p);
     glPushMatrix();
     glTranslatef(p.x, top + 0.02f, p.z);
-    glColor3f(0.92f, 0.92f, 0.98f);
+
+    // Plate
+    glPushMatrix();
+    glColor3f(0.93f, 0.93f, 0.95f);
     glRotatef(-90, 1, 0, 0);
-    drawSolidCylinder(0.50f, 0.05f);
-    glRotatef(90, 1, 0, 0);
+    drawSolidCylinder(0.70f, 0.04f);
+    glPopMatrix();
 
+    // Outer rice ring (slight roughness via alternating tiny cubes)
+    glPushMatrix();
+    glColor3f(0.95f, 0.95f, 0.96f);
+    for (int i = 0; i < 24; ++i) {
+        float ang = (3.14159265f * 2.0f / 24) * i;
+        float r = 0.46f;
+        glPushMatrix();
+        glTranslatef(sinf(ang) * r, 0.09f, cosf(ang) * r);
+        float s = 0.14f + 0.02f * ((i % 2) ? 1 : -1);
+        glScalef(s, 0.12f, s);
+        glutSolidCube(1);
+        glPopMatrix();
+    }
+    glPopMatrix();
+
+    // Seaweed wrap
+    glColor3f(0.06f, 0.12f, 0.11f);
+    glPushMatrix();
+    glRotatef(-90, 1, 0, 0);
+    drawSolidCylinder(0.42f, 0.22f);
+    glPopMatrix();
+
+    // Inner rice core
     glColor3f(0.97f, 0.97f, 0.97f);
-    glPushMatrix(); glRotatef(-90, 1, 0, 0); drawSolidCylinder(0.40f, 0.20f); glPopMatrix();
+    glPushMatrix();
+    glRotatef(-90, 1, 0, 0);
+    drawSolidCylinder(0.33f, 0.18f);
+    glPopMatrix();
 
-    glColor3f(0.06f, 0.12f, 0.10f);
-    glPushMatrix(); glScalef(0.85f, 0.12f, 0.50f); glutSolidCube(0.6f); glPopMatrix();
+    // Topping assortment (fish slices + roe + wasabi dab)
+    glPushMatrix();
+    glTranslatef(0, 0.24f, 0);
+    // Fish slice stack
+    for (int i = 0; i < 3; ++i) {
+        glPushMatrix();
+        glTranslatef(-0.10f + i * 0.10f, 0.0f, -0.03f + 0.025f * i);
+        glRotatef(12.0f * i, 0, 1, 0);
+        glColor3f(0.92f - 0.05f * i, 0.38f + 0.04f * i, 0.26f);
+        glScalef(0.22f, 0.05f, 0.10f);
+        glutSolidCube(1);
+        glPopMatrix();
+    }
+    // Roe cluster
+    for (int r = 0; r < 12; ++r) {
+        float ang = (2.0f * 3.14159265f / 12) * r;
+        glPushMatrix();
+        glTranslatef(sinf(ang) * 0.16f, 0.015f, cosf(ang) * 0.12f);
+        glColor3f(0.98f, 0.45f, 0.20f);
+        glutSolidSphere(0.035f, 14, 14);
+        glPopMatrix();
+    }
+    // Wasabi
+    glPushMatrix();
+    glTranslatef(0.18f, 0.01f, 0.10f);
+    glColor3f(0.36f, 0.75f, 0.32f);
+    glutSolidSphere(0.06f, 14, 14);
+    glPopMatrix();
+    glPopMatrix();
 
-    glColor3f(0.90f, 0.38f, 0.22f); glPushMatrix(); glTranslatef(0, 0.18f, 0.05f); glutSolidSphere(0.14f, 16, 16); glPopMatrix();
-    glColor3f(0.95f, 0.52f, 0.30f); glPushMatrix(); glTranslatef(0.07f, 0.16f, -0.05f); glutSolidSphere(0.10f, 14, 14); glPopMatrix();
-    glColor3f(0.2f, 0.7f, 0.3f); glPushMatrix(); glTranslatef(-0.12f, 0.15f, 0.08f); glScalef(0.14f, 0.08f, 0.14f); glutSolidCube(1); glPopMatrix();
-    glColor3f(0.25f, 0.75f, 0.35f); glPushMatrix(); glTranslatef(0.14f, 0.15f, -0.06f); glScalef(0.12f, 0.07f, 0.12f); glutSolidCube(1); glPopMatrix();
+    // Chopsticks on plate edge
+    glPushMatrix();
+    glTranslatef(0.0f, 0.05f, 0.58f);
+    glRotatef(6, 0, 1, 0);
+    for (int c = 0; c < 2; ++c) {
+        glPushMatrix();
+        glTranslatef(0.06f * c, 0, 0);
+        glColor3f(0.55f, 0.42f, 0.25f);
+        glRotatef(-90, 1, 0, 0);
+        drawSolidCylinder(0.015f, 0.80f);
+        glPopMatrix();
+    }
+    glPopMatrix();
+
+    glPopMatrix();
+}
+
+// Replace drawSmallTemple
+void drawSmallTemple(const Platform& p, float phase) {
+    float top = platformTopY(p);
+    glPushMatrix();
+    glTranslatef(p.x, top + 0.02f, p.z);
+
+    // Animated subtle lift if phase>0
+    float animLift = (phase > 0.0f) ? 0.06f * sinf(phase * 2.2f) : 0.0f;
+
+    // Base foundation & stairs
+    glPushMatrix();
+    glColor3f(0.52f, 0.47f, 0.42f);
+    glScalef(0.90f, 0.08f, 0.90f);
+    glutSolidCube(1);
+    glPopMatrix();
+
+    for (int s = 0; s < 3; ++s) {
+        glPushMatrix();
+        glTranslatef(0, 0.04f + s * 0.025f, 0.42f - s * 0.05f);
+        glColor3f(0.45f - s * 0.03f, 0.40f - s * 0.03f, 0.35f - s * 0.03f);
+        glScalef(0.50f + 0.10f * s, 0.025f, 0.26f);
+        glutSolidCube(1);
+        glPopMatrix();
+    }
+
+    // Pillars
+    float pillarH = 0.40f;
+    float pillarR = 0.055f;
+    for (int sx = -1; sx <= 1; sx += 2) {
+        for (int sz = -1; sz <= 1; sz += 2) {
+            glPushMatrix();
+            glTranslatef(sx * 0.32f, 0.04f, sz * 0.32f);
+            glColor3f(0.50f, 0.44f, 0.38f);
+            glRotatef(-90, 1, 0, 0);
+            drawSolidCylinder(pillarR, pillarH);
+            glPopMatrix();
+        }
+    }
+
+    // Mid platform
+    glPushMatrix();
+    glTranslatef(0, 0.04f + pillarH, 0);
+    glColor3f(0.46f, 0.41f, 0.36f);
+    glScalef(0.70f, 0.05f, 0.70f);
+    glutSolidCube(1);
+    glPopMatrix();
+
+    // Roof layered (with animated vertical breathing)
+    float roofBaseY = 0.04f + pillarH + animLift;
+    int layers = 3;
+    for (int L = 0; L < layers; ++L) {
+        float y = roofBaseY + 0.10f * L;
+        float scale = 0.78f - 0.16f * L;
+        glPushMatrix();
+        glTranslatef(0, y, 0);
+        glColor3f(0.35f + 0.05f * L, 0.18f + 0.02f * L, 0.18f);
+        glRotatef(-90, 1, 0, 0);
+        glutSolidCone(scale, 0.18f, 20, 1);
+        glPopMatrix();
+    }
+
+    // Roof finial
+    glPushMatrix();
+    glTranslatef(0, roofBaseY + 0.10f * layers + 0.04f, 0);
+    glColor3f(0.88f, 0.70f, 0.42f);
+    glutSolidSphere(0.06f, 16, 16);
+    glPopMatrix();
+
+    // Hanging lanterns (pulse brightness when collecting)
+    float glowPhase = (phase > 0.0f) ? (0.5f + 0.5f * sinf(phase * 4.0f)) : 0.4f;
+    for (int side = -1; side <= 1; side += 2) {
+        glPushMatrix();
+        glTranslatef(side * 0.48f, 0.04f + pillarH - 0.06f, 0.10f);
+        glColor3f(0.40f, 0.30f, 0.25f);
+        glRotatef(-90, 1, 0, 0);
+        drawSolidCylinder(0.012f, 0.06f);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(side * 0.48f, 0.04f + pillarH - 0.08f, 0.10f);
+        float cr = 0.90f * glowPhase;
+        float cg = 0.78f * glowPhase;
+        float cb = 0.55f * glowPhase;
+        drawLantern(cr, cg, cb);
+        glPopMatrix();
+    }
+
+    // Banners
+    for (int s = -1; s <= 1; s += 2) {
+        glPushMatrix();
+        glTranslatef(s * 0.60f, 0.04f + 0.12f, -0.35f);
+        glColor3f(0.55f, 0.10f + 0.25f * (phase > 0.0f), 0.10f);
+        glScalef(0.10f, 0.28f, 0.01f);
+        glutSolidCube(1);
+        glPopMatrix();
+    }
+
+    // Central incense stand
+    glPushMatrix();
+    glTranslatef(0, 0.04f + pillarH + 0.02f, 0.18f);
+    glColor3f(0.42f, 0.33f, 0.26f);
+    glRotatef(-90, 1, 0, 0);
+    drawSolidCylinder(0.025f, 0.10f);
+    glPopMatrix();
+
     glPopMatrix();
 }
 
@@ -315,18 +504,7 @@ void drawSamuraiSword(const Platform& p) {
     glPopMatrix();
 }
 
-void drawSmallTemple(const Platform& p, float phase) {
-    float top = platformTopY(p);
-    glPushMatrix(); glTranslatef(p.x, top + 0.04f, p.z);
-    glColor3f(0.62f, 0.57f, 0.52f); glPushMatrix(); glScalef(0.80f, 0.08f, 0.80f); glutSolidCube(1); glPopMatrix();
-    glColor3f(0.48f, 0.42f, 0.37f); float s = 0.32f, h = 0.36f; for (int i = -1; i <= 1; i += 2) { for (int j = -1; j <= 1; j += 2) { glPushMatrix(); glTranslatef(i * s, 0.04f, j * s); glRotatef(-90, 1, 0, 0); drawSolidCylinder(0.05f, h); glPopMatrix(); } }
-    float roofR = 0.35f + 0.25f * (0.5f * (sinf(phase * 2.0f) + 1)); glColor3f(roofR, 0.22f, 0.22f); glPushMatrix(); glTranslatef(0, 0.04f + h, 0); glRotatef(-90, 1, 0, 0); glutSolidCone(0.55f, 0.34f, 18, 1); glPopMatrix();
-    glColor3f(0.88f, 0.72f, 0.45f); glPushMatrix(); glTranslatef(0, 0.04f + h + 0.37f, 0); glutSolidSphere(0.06f, 14, 14); glPopMatrix();
-    glColor3f(0.40f, 0.30f, 0.24f); glPushMatrix(); glTranslatef(0.0f, 0.04f + h, 0.22f); glRotatef(-90, 1, 0, 0); drawSolidCylinder(0.02f, 0.32f); glPopMatrix();
-    glColor3f(0.50f, 0.45f, 0.40f); glPushMatrix(); glTranslatef(0, 0.01f, 0.42f); glScalef(0.50f, 0.06f, 0.25f); glutSolidCube(1); glPopMatrix();
-    for (int side = -1; side <= 1; side += 2) { glPushMatrix(); glTranslatef(0.42f * side, 0.04f, 0.10f); glColor3f(0.5f, 0.45f, 0.35f); glRotatef(-90, 1, 0, 0); drawSolidCylinder(0.035f, 0.15f); glPopMatrix(); glPushMatrix(); glTranslatef(0.42f * side, 0.19f, 0.10f); glColor3f(0.9f, 0.85f, 0.6f); glutSolidSphere(0.05f, 12, 12); glPopMatrix(); }
-    glPopMatrix();
-}
+
 
 void drawCoin(float x, float y, float z) {
     glPushMatrix();
@@ -647,6 +825,40 @@ void updateFreeCamera(float dt) {
 
 void Display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (gameOver && !gameWon) {
+        glDisable(GL_DEPTH_TEST);
+
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        gluOrtho2D(0, 1, 0, 1);
+
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+
+        glBegin(GL_QUADS);
+        glColor3f(0.05f, 0.05f, 0.08f);
+        glVertex2f(0, 0);
+        glVertex2f(1, 0);
+        glVertex2f(1, 1);
+        glVertex2f(0, 1);
+        glEnd();
+
+        glColor3f(0.9f, 0.1f, 0.1f);
+        drawText(0.40f, 0.55f, "GAME OVER", GLUT_BITMAP_HELVETICA_18);
+        drawText(0.40f, 0.75f, "LOSSEEERRRRRRRR", GLUT_BITMAP_HELVETICA_18);
+
+
+        glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+
+        glEnable(GL_DEPTH_TEST);
+        glFlush();
+        return;
+    }
     updateCamera();
     drawGround();
     drawWalls();

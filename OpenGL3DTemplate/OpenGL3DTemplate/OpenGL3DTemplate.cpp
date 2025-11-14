@@ -264,204 +264,61 @@ void drawPlatformBase(const Platform& p){
 }
 
 void drawSushi(const Platform& p){
+    float top = platformTopY(p);
     glPushMatrix();
-    glTranslatef(p.x,p.y+0.22f,p.z);
+    glTranslatef(p.x, top + 0.02f, p.z);
     glColor3f(0.92f,0.92f,0.98f);
     glRotatef(-90,1,0,0);
     drawSolidCylinder(0.50f,0.05f);
     glRotatef(90,1,0,0);
 
     glColor3f(0.97f,0.97f,0.97f);
-    glPushMatrix();
-    glRotatef(-90,1,0,0);
-    drawSolidCylinder(0.40f,0.20f);
-    glPopMatrix();
+    glPushMatrix(); glRotatef(-90,1,0,0); drawSolidCylinder(0.40f,0.20f); glPopMatrix();
 
     glColor3f(0.06f,0.12f,0.10f);
-    glPushMatrix();
-    glScalef(0.85f,0.12f,0.50f);
-    glutSolidCube(0.6f);
-    glPopMatrix();
+    glPushMatrix(); glScalef(0.85f,0.12f,0.50f); glutSolidCube(0.6f); glPopMatrix();
 
-    glColor3f(0.90f,0.38f,0.22f);
-    glPushMatrix();
-    glTranslatef(0,0.18f,0.05f);
-    glutSolidSphere(0.14f,16,16);
-    glPopMatrix();
-
-    glColor3f(0.95f,0.52f,0.30f);
-    glPushMatrix();
-    glTranslatef(0.07f,0.16f,-0.05f);
-    glutSolidSphere(0.10f,14,14);
-    glPopMatrix();
-
-    glColor3f(0.2f,0.7f,0.3f);
-    glPushMatrix();
-    glTranslatef(-0.12f,0.15f,0.08f);
-    glScalef(0.14f,0.08f,0.14f);
-    glutSolidCube(1);
-    glPopMatrix();
-    glColor3f(0.25f,0.75f,0.35f);
-    glPushMatrix();
-    glTranslatef(0.14f,0.15f,-0.06f);
-    glScalef(0.12f,0.07f,0.12f);
-    glutSolidCube(1);
-    glPopMatrix();
+    glColor3f(0.90f,0.38f,0.22f); glPushMatrix(); glTranslatef(0,0.18f,0.05f); glutSolidSphere(0.14f,16,16); glPopMatrix();
+    glColor3f(0.95f,0.52f,0.30f); glPushMatrix(); glTranslatef(0.07f,0.16f,-0.05f); glutSolidSphere(0.10f,14,14); glPopMatrix();
+    glColor3f(0.2f,0.7f,0.3f); glPushMatrix(); glTranslatef(-0.12f,0.15f,0.08f); glScalef(0.14f,0.08f,0.14f); glutSolidCube(1); glPopMatrix();
+    glColor3f(0.25f,0.75f,0.35f); glPushMatrix(); glTranslatef(0.14f,0.15f,-0.06f); glScalef(0.12f,0.07f,0.12f); glutSolidCube(1); glPopMatrix();
     glPopMatrix();
 }
 
 void drawNinjaStar(const Platform& p,float animT){
-    glPushMatrix();
-    glTranslatef(p.x,p.y+0.26f,p.z);
-
-    glColor3f(0.55f,0.55f,0.6f);
-    glutSolidTorus(0.04f,0.26f,18,30);
-
-    glColor3f(0.75f,0.75f,0.8f);
-    glutSolidSphere(0.085f,18,18);
-
-    glColor3f(0.85f,0.85f,0.9f);
-    for(int i=0;i<4;++i){
-        glPushMatrix();
-        glRotatef(90*i,0,1,0);
-        glTranslatef(0.28f,0,0);
-        glRotatef(90,0,0,1);
-        glutSolidCone(0.075f,0.40f,12,1);
-        glPopMatrix();
-    }
-    glColor3f(0.4f,0.4f,0.45f);
-    glutWireTorus(0.02f,0.33f,10,28);
-
-    glColor3f(0.6f,0.6f,0.65f);
-    for(int i=0;i<8;i++){
-        glPushMatrix();
-        glRotatef(45*i,0,1,0);
-        glTranslatef(0.18f,0,0);
-        glRotatef(90,0,0,1);
-        glutSolidCone(0.04f,0.18f,10,1);
-        glPopMatrix();
-    }
+    float top = platformTopY(p);
+    glPushMatrix(); glTranslatef(p.x, top + 0.04f, p.z);
+    glColor3f(0.55f,0.55f,0.6f); glutSolidTorus(0.04f,0.26f,18,30);
+    glColor3f(0.75f,0.75f,0.8f); glutSolidSphere(0.085f,18,18);
+    glColor3f(0.85f,0.85f,0.9f); for(int i=0;i<4;++i){ glPushMatrix(); glRotatef(90*i,0,1,0); glTranslatef(0.28f,0,0); glRotatef(90,0,0,1); glutSolidCone(0.075f,0.40f,12,1); glPopMatrix(); }
+    glColor3f(0.4f,0.4f,0.45f); glutWireTorus(0.02f,0.33f,10,28);
+    glColor3f(0.6f,0.6f,0.65f); for(int i=0;i<8;i++){ glPushMatrix(); glRotatef(45*i,0,1,0); glTranslatef(0.18f,0,0); glRotatef(90,0,0,1); glutSolidCone(0.04f,0.18f,10,1); glPopMatrix(); }
     glPopMatrix();
 }
 
 void drawSamuraiSword(const Platform& p){
-    glPushMatrix();
-    glTranslatef(p.x,p.y+0.27f,p.z);
-    glRotatef(18,0,1,0);
-
-    glColor3f(0.88f,0.88f,0.93f);
-    glPushMatrix();
-    glScalef(0.10f,0.05f,1.25f);
-    glutSolidCube(1);
-    glPopMatrix();
-
-    glColor3f(0.7f,0.7f,0.75f);
-    glPushMatrix();
-    glScalef(0.05f,0.018f,1.20f);
-    glutSolidCube(1);
-    glPopMatrix();
-
-    glColor3f(0.35f,0.28f,0.22f);
-    glPushMatrix();
-    glTranslatef(0,0,-0.38f);
-    glRotatef(-90,1,0,0);
-    drawSolidCylinder(0.085f,0.03f);
-    glPopMatrix();
-
-    glColor3f(0.22f,0.16f,0.12f);
-    glPushMatrix();
-    glTranslatef(0,0,-0.56f);
-    glRotatef(-90,1,0,0);
-    drawSolidCylinder(0.052f,0.28f);
-    glPopMatrix();
-
-    glColor3f(0.42f,0.33f,0.26f);
-    glPushMatrix();
-    glTranslatef(0,0,-0.72f);
-    glutSolidSphere(0.05f,14,14);
-    glPopMatrix();
-
-    glColor3f(0.3f,0.25f,0.2f);
-    glPushMatrix();
-    glTranslatef(0,0,-0.30f);
-    glRotatef(90,1,0,0);
-    glutSolidTorus(0.015f,0.11f,12,20);
-    glPopMatrix();
-
-    glColor3f(0.5f,0.4f,0.3f);
-    for(int s=-1;s<=1;s+=2){
-        glPushMatrix();
-        glTranslatef(0.07f*s,0.015f,-0.30f);
-        glScalef(0.04f,0.02f,0.16f);
-        glutSolidCube(1);
-        glPopMatrix();
-    }
+    float top = platformTopY(p);
+    glPushMatrix(); glTranslatef(p.x, top + 0.05f, p.z); glRotatef(18,0,1,0);
+    glColor3f(0.88f,0.88f,0.93f); glPushMatrix(); glScalef(0.10f,0.05f,1.25f); glutSolidCube(1); glPopMatrix();
+    glColor3f(0.7f,0.7f,0.75f); glPushMatrix(); glScalef(0.05f,0.018f,1.20f); glutSolidCube(1); glPopMatrix();
+    glColor3f(0.35f,0.28f,0.22f); glPushMatrix(); glTranslatef(0,0,-0.38f); glRotatef(-90,1,0,0); drawSolidCylinder(0.085f,0.03f); glPopMatrix();
+    glColor3f(0.22f,0.16f,0.12f); glPushMatrix(); glTranslatef(0,0,-0.56f); glRotatef(-90,1,0,0); drawSolidCylinder(0.052f,0.28f); glPopMatrix();
+    glColor3f(0.42f,0.33f,0.26f); glPushMatrix(); glTranslatef(0,0,-0.72f); glutSolidSphere(0.05f,14,14); glPopMatrix();
+    glColor3f(0.3f,0.25f,0.2f); glPushMatrix(); glTranslatef(0,0,-0.30f); glRotatef(90,1,0,0); glutSolidTorus(0.015f,0.11f,12,20); glPopMatrix();
+    glColor3f(0.5f,0.4f,0.3f); for(int s=-1;s<=1;s+=2){ glPushMatrix(); glTranslatef(0.07f*s,0.015f,-0.30f); glScalef(0.04f,0.02f,0.16f); glutSolidCube(1); glPopMatrix(); }
     glPopMatrix();
 }
 
 void drawSmallTemple(const Platform& p,float phase){
-    glPushMatrix();
-    glTranslatef(p.x,p.y+0.25f,p.z);
-
-    glColor3f(0.62f,0.57f,0.52f);
-    glPushMatrix();
-    glScalef(0.80f,0.08f,0.80f);
-    glutSolidCube(1);
-    glPopMatrix();
-
-    glColor3f(0.48f,0.42f,0.37f);
-    float s=0.32f,h=0.36f;
-    for(int i=-1;i<=1;i+=2){
-        for(int j=-1;j<=1;j+=2){
-            glPushMatrix();
-            glTranslatef(i*s,0.04f,j*s);
-            glRotatef(-90,1,0,0);
-            drawSolidCylinder(0.05f,h);
-            glPopMatrix();
-        }
-    }
-
-    float roofR=0.35f+0.25f*(0.5f*(sinf(phase*2.0f)+1));
-    glColor3f(roofR,0.22f,0.22f);
-    glPushMatrix();
-    glTranslatef(0,0.04f+h,0);
-    glRotatef(-90,1,0,0);
-    glutSolidCone(0.55f,0.34f,18,1);
-    glPopMatrix();
-
-    glColor3f(0.88f,0.72f,0.45f);
-    glPushMatrix();
-    glTranslatef(0,0.04f+h+0.37f,0);
-    glutSolidSphere(0.06f,14,14);
-    glPopMatrix();
-
-    glColor3f(0.40f,0.30f,0.24f);
-    glPushMatrix();
-    glTranslatef(0.0f,0.04f+h,0.22f);
-    glRotatef(-90,1,0,0);
-    drawSolidCylinder(0.02f,0.32f);
-    glPopMatrix();
-
-    glColor3f(0.50f,0.45f,0.40f);
-    glPushMatrix();
-    glTranslatef(0,0.01f,0.42f);
-    glScalef(0.50f,0.06f,0.25f);
-    glutSolidCube(1);
-    glPopMatrix();
-
-    for(int side=-1; side<=1; side+=2){
-        glPushMatrix();
-        glTranslatef(0.42f*side,0.04f,0.10f);
-        glColor3f(0.5f,0.45f,0.35f);
-        glRotatef(-90,1,0,0);
-        drawSolidCylinder(0.035f,0.15f);
-        glPopMatrix();
-        glPushMatrix();
-        glTranslatef(0.42f*side,0.19f,0.10f);
-        glColor3f(0.9f,0.85f,0.6f);
-        glutSolidSphere(0.05f,12,12);
-        glPopMatrix();
-    }
+    float top = platformTopY(p);
+    glPushMatrix(); glTranslatef(p.x, top + 0.04f, p.z);
+    glColor3f(0.62f,0.57f,0.52f); glPushMatrix(); glScalef(0.80f,0.08f,0.80f); glutSolidCube(1); glPopMatrix();
+    glColor3f(0.48f,0.42f,0.37f); float s=0.32f,h=0.36f; for(int i=-1;i<=1;i+=2){ for(int j=-1;j<=1;j+=2){ glPushMatrix(); glTranslatef(i*s,0.04f,j*s); glRotatef(-90,1,0,0); drawSolidCylinder(0.05f,h); glPopMatrix(); }}
+    float roofR=0.35f+0.25f*(0.5f*(sinf(phase*2.0f)+1)); glColor3f(roofR,0.22f,0.22f); glPushMatrix(); glTranslatef(0,0.04f+h,0); glRotatef(-90,1,0,0); glutSolidCone(0.55f,0.34f,18,1); glPopMatrix();
+    glColor3f(0.88f,0.72f,0.45f); glPushMatrix(); glTranslatef(0,0.04f+h+0.37f,0); glutSolidSphere(0.06f,14,14); glPopMatrix();
+    glColor3f(0.40f,0.30f,0.24f); glPushMatrix(); glTranslatef(0.0f,0.04f+h,0.22f); glRotatef(-90,1,0,0); drawSolidCylinder(0.02f,0.32f); glPopMatrix();
+    glColor3f(0.50f,0.45f,0.40f); glPushMatrix(); glTranslatef(0,0.01f,0.42f); glScalef(0.50f,0.06f,0.25f); glutSolidCube(1); glPopMatrix();
+    for(int side=-1; side<=1; side+=2){ glPushMatrix(); glTranslatef(0.42f*side,0.04f,0.10f); glColor3f(0.5f,0.45f,0.35f); glRotatef(-90,1,0,0); drawSolidCylinder(0.035f,0.15f); glPopMatrix(); glPushMatrix(); glTranslatef(0.42f*side,0.19f,0.10f); glColor3f(0.9f,0.85f,0.6f); glutSolidSphere(0.05f,12,12); glPopMatrix(); }
     glPopMatrix();
 }
 
@@ -558,6 +415,18 @@ void updateCamera(){
     }
 }
 
+// Helper to get platform top height at (x,z)
+static float groundTopY(){ return -0.9f; } // based on ground cube centered at -1.0 with half-height 0.1
+static float platformTopY(const Platform& p){ return p.y + 0.11f; }
+static bool pointOnPlatform(const Platform& p,float x,float z){
+    return x >= p.x - p.w*0.5f && x <= p.x + p.w*0.5f && z >= p.z - p.d*0.5f && z <= p.z + p.d*0.5f;
+}
+static float surfaceTopAt(float x,float z){
+    for(int i=0;i<4;i++){ if(pointOnPlatform(platforms[i],x,z)) return platformTopY(platforms[i]); }
+    return groundTopY();
+}
+static float ninjaFootOffset(){ return 1.38f * ninja.scale; } // derived from internal model leg chain length
+
 void initScene(){
     srand((unsigned int)time(nullptr));
     float py=-0.8f;
@@ -607,6 +476,7 @@ void initScene(){
     gameWon=false; gameOver=false; timeLeftMs=90*1000; lastTickMs=glutGet(GLUT_ELAPSED_TIME);
     for(int i=0;i<4;i++) walls[i].setColor(0.28f,0.30f,0.32f);
     winSoundPlayed=false; loseSoundPlayed=false;
+    postInitAdjustNinjaY();
 }
 
 void updateCoinCollection(){
@@ -732,6 +602,8 @@ void integrateMovement(float dt){
     } else {
         velX*=0.3f; velZ*=0.3f;
     }
+    // vertical snap
+    float top = surfaceTopAt(ninja.x,ninja.z); ninja.y = top + ninjaFootOffset();
 }
 
 void updateFreeCamera(float dt){
